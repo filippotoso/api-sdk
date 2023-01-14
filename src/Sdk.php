@@ -14,6 +14,11 @@ class Sdk
     protected ClientBuilder $clientBuilder;
     protected Options $options;
 
+    /**
+     * Constructor
+     *
+     * @param Options $options
+     */
     public function __construct(Options $options)
     {
         $this->options = $options;
@@ -30,11 +35,21 @@ class Sdk
         );
     }
 
+    /**
+     * Get the client
+     *
+     * @return HttpMethodsClientInterface
+     */
     public function client(): HttpMethodsClientInterface
     {
         return $this->clientBuilder->client();
     }
 
+    /**
+     * Get the options
+     *
+     * @return Options
+     */
     public function options(): Options
     {
         return $this->options;
