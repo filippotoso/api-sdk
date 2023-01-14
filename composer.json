@@ -1,0 +1,26 @@
+{
+    "name": "filippo-toso/api-sdk",
+    "description": "A lightweight SDK to develop REST API clients",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Filippo Toso",
+            "email": "filippo.toso@creativepark.it"
+        }
+    ],
+    "require": {
+        "php": "^8.0 || ^9.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-client": "^1.0",
+        "php-http/client-common": "^2.6"
+    },
+    "require-dev": {
+        "php-http/curl-client": "^2.2",
+        "laminas/laminas-diactoros": "^2.21"
+    },
+    "autoload": {
+        "psr-4": {
+            "FilippoToso\\Api\\Sdk\\": "src"
+        }
+    }
+}
