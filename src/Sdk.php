@@ -8,6 +8,8 @@ use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Client\Common\Plugin\BaseUriPlugin;
 use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
 use Http\Discovery\Psr17FactoryDiscovery;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 class Sdk
 {
@@ -43,6 +45,26 @@ class Sdk
     public function client(): HttpMethodsClientInterface
     {
         return $this->clientBuilder->client();
+    }
+
+    /**
+     * Get the stream
+     *
+     * @return StreamFactoryInterface
+     */
+    public function stream(): StreamFactoryInterface
+    {
+        return $this->clientBuilder->stream();
+    }
+
+    /**
+     * Get the request
+     *
+     * @return RequestFactoryInterface
+     */
+    public function request(): RequestFactoryInterface
+    {
+        return $this->clientBuilder->request();
     }
 
     /**

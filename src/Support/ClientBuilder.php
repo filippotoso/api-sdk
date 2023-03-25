@@ -47,4 +47,14 @@ class ClientBuilder
             $this->streamFactoryInterface
         );
     }
+
+    public function stream(): StreamFactoryInterface
+    {
+        return $this->streamFactoryInterface;
+    }
+
+    public function request(): RequestFactoryInterface
+    {
+        return $this->requestFactoryInterface;
+    }
 }
