@@ -7,6 +7,17 @@ use FilippoToso\Api\Sdk\Support\Response;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @method Response get($uri, array $headers = [])
+ * @method Response head($uri, array $headers = [])
+ * @method Response trace($uri, array $headers = [])
+ * @method Response post($uri, array $headers = [], $body = null)
+ * @method Response put($uri, array $headers = [], $body = null)
+ * @method Response patch($uri, array $headers = [], $body = null)
+ * @method Response delete($uri, array $headers = [], $body = null)
+ * @method Response options($uri, array $headers = [], $body = null)
+ * @method Response send(string $method, $uri, array $headers = [], $body = null) 
+ */
 class Endpoint
 {
     protected Sdk $sdk;
@@ -54,6 +65,10 @@ class Endpoint
     public function __call($name, $arguments)
     {
         if (method_exists(HttpMethodsClientInterface::class, $name)) {
+            if (in_array($name, ['post', 'put', 'patch', 'delete', 'options'])) {
+                $arguments[2] = is_array($arguments[2]) ? json_encode($arguments) : $arguments[2];
+            }
+
             return $this->parse(
                 call_user_func_array([$this->sdk->client(), $name], $arguments)
             );
