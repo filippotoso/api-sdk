@@ -1,10 +1,11 @@
 <?php
 
-namespace FilippoToso\Api\Sdk;
+namespace FilippoToso\Api\Sdk\Support;
 
 use Exception;
-use FilippoToso\Api\Sdk\Support\Client;
+use FilippoToso\Api\Sdk\Sdk;
 use FilippoToso\Api\Sdk\Support\Response;
+use Http\Client\Common\HttpMethodsClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -18,11 +19,9 @@ use Psr\Http\Message\ResponseInterface;
  * @method Response options($uri, array $headers = [], $body = null)
  * @method Response send(string $method, $uri, array $headers = [], $body = null) 
  */
-class Endpoint
+class Client
 {
     protected Sdk $sdk;
-
-    protected Client $client;
 
     /**
      * Constructor
@@ -32,7 +31,6 @@ class Endpoint
     public function __construct(Sdk $sdk)
     {
         $this->sdk = $sdk;
-        $this->client = new Client($sdk);
     }
 
     /**
@@ -67,6 +65,16 @@ class Endpoint
      */
     public function __call($name, $arguments)
     {
-        return call_user_func_array([$this->client, $name], $arguments);
+        if (method_exists(HttpMethodsClientInterface::class, $name)) {
+            if (in_array($name, ['post', 'put', 'patch', 'delete', 'options'])) {
+                $arguments[2] = is_array($arguments[2]) ? json_encode($arguments) : $arguments[2];
+            }
+
+            return $this->parse(
+                call_user_func_array([$this->sdk->client(), $name], $arguments)
+            );
+        }
+
+        throw new Exception('Invalid method ' . __CLASS__ . '::' . $name);
     }
 }
